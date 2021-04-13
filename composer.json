@@ -1,0 +1,39 @@
+{
+    "name": "alexey/forms",
+    "authors": [
+        {
+            "name": "AlexeyRudkovskiy",
+            "email": "alex.rudkowskij@yandex.ru"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../forms-contract"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Lighthouse\\Laravel\\Forms\\": "src/"
+        }
+    },
+    "require": {
+        "alexey/forms_contract": "dev-master",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.16"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lighthouse\\Laravel\\Forms\\FormsServiceProvider"
+            ]
+        }
+    }
+}
