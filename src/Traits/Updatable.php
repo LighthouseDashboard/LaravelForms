@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Lighthouse\Contract\Form\HandleRequest;
 use Lighthouse\Contract\Form\Request;
 use Lighthouse\Contract\Form\UpdateAfterSave;
+use Lighthouse\Laravel\Forms\Contracts\OnCreateOrUpdate;
 
 /**
  * Trait Updatable
@@ -29,6 +30,10 @@ trait Updatable
 
         $fields = collect($this->getFields());
 
+        if ($this instanceof ReviewForm) {
+            dd($this);
+        }
+
         $fields
             ->filter(fn ($element) => $element instanceof HandleRequest)
             ->filter(fn ($element) => !($element instanceof UpdateAfterSave))
@@ -42,6 +47,14 @@ trait Updatable
             ->filter(fn ($element) => $element instanceof HandleRequest)
             ->filter(fn ($element) => $element instanceof UpdateAfterSave)
             ->each(fn (HandleRequest $element) => $element->handle($request, $this->data));
+
+        $shouldUpdate = $fields
+            ->filter(fn ($element) => $element instanceof OnCreateOrUpdate)
+            ->filter(fn (OnCreateOrUpdate $element) => $element->onCreateOrUpdate($this->data));
+
+        if ($shouldUpdate->count() > 0 && $this->data instanceof Model) {
+            $this->data->save();
+        }
 
         return $this;
     }

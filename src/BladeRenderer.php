@@ -4,6 +4,7 @@
 namespace Lighthouse\Laravel\Forms;
 
 
+use App\Forms\ReviewForm;
 use Illuminate\Support\Collection;
 use Lighthouse\Contract\Form\Element;
 use Lighthouse\Contract\Form\Field;
@@ -34,6 +35,7 @@ class BladeRenderer implements Renderer
         return view($viewName, compact('form'))
             ->with('sections', $sections)
             ->with('renderer', $this)
+            ->with('path', $form->getPath())
             ->with('isRoot', $isRoot)
             ->with($this->appends);
     }
